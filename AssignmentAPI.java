@@ -13,7 +13,11 @@ public class AssignmentAPI
 {
 // storing orders
 public Map<int,Order> orderMap = new HashMap<int,Order>();
-public int buy(int norOfBricks)
+@POST
+@Consumes("application/json")
+@Produces("application/json")
+  @Path("json")
+  public RestResponse<Integer> buy(@QueryParam("norOfBricks") int norOfBricks)
 {
 System.out.println("number of bricks buying:"+norOfBricks);
 Order order = new Order(norOfBricks);
@@ -21,7 +25,10 @@ orderMap.put(this.numberOfBricks,order);
 return order.orderReferenceNumber;
 }
 
-public Order retriveOrderDetails(int orderReferenceNumber)
+  @GET
+@Produces("application/json")
+@Path("json")
+public Order retriveOrderDetails(@QueryParam("orderReferenceNumber") int orderReferenceNumber)
 {
 Order order = orderMap.get(orderReferenceNumber);
 if(order != null)
@@ -33,7 +40,9 @@ else
 return null;
 }
 }
-
+@GET
+@Produces("application/json")
+@Path("json")
 public List<Order> retriveAllOrderDetail()
 {
 List<Order> allOrders = new ArrayList<Order>();
@@ -45,8 +54,11 @@ allOrders.add(order);
 }
 return allOrders;
 }
-  
-  public int updateOrder(int orderReferenceNumber,int numberOfBricks)
+@PUT
+@Consumes("application/json")
+@Produces("application/json")
+  @Path("json")
+  public int updateOrder(@QueryParam("orderReferenceNumber") int orderReferenceNumber, @QueryParam("numberOfBricks") int numberOfBricks)
   {
     Order order = orderMap.get(orderReferenceNumber);
     order.numberOfBricks = numberOfBricks;
@@ -69,8 +81,11 @@ return "The Order is marked as dispacthed";
 }
  
     
- 
-     public String preventUpdateOrder(int orderReferenceNumber,int numberOfBricks)
+ @PUT
+@Consumes("application/json")
+@Produces("application/json")
+@Path("json")
+     public String preventUpdateOrder(@QueryParam("orderReferenceNumber") int orderReferenceNumber, @QueryParam("numberOfBricks") int numberOfBricks)
   {
     Order order = orderMap.get(orderReferenceNumber);
    if(order.dispatch){
