@@ -28,7 +28,7 @@ return order.orderReferenceNumber;
   @GET
 @Produces("application/json")
 @Path("json")
-public Order retriveOrderDetails(@QueryParam("orderReferenceNumber") int orderReferenceNumber)
+public RestResponse<Order> retriveOrderDetails(@QueryParam("orderReferenceNumber") int orderReferenceNumber)
 {
 Order order = orderMap.get(orderReferenceNumber);
 if(order != null)
@@ -43,7 +43,7 @@ return null;
 @GET
 @Produces("application/json")
 @Path("json")
-public List<Order> retriveAllOrderDetail()
+public RestResponse<List<Order>> retriveAllOrderDetail()
 {
 List<Order> allOrders = new ArrayList<Order>();
 Set allOrderRef = orderMap.keySet();
@@ -58,7 +58,7 @@ return allOrders;
 @Consumes("application/json")
 @Produces("application/json")
   @Path("json")
-  public int updateOrder(@QueryParam("orderReferenceNumber") int orderReferenceNumber, @QueryParam("numberOfBricks") int numberOfBricks)
+  public RestResponse<Integer> updateOrder(@QueryParam("orderReferenceNumber") int orderReferenceNumber, @QueryParam("numberOfBricks") int numberOfBricks)
   {
     Order order = orderMap.get(orderReferenceNumber);
     order.numberOfBricks = numberOfBricks;
@@ -66,7 +66,11 @@ return allOrders;
     return orderReferenceNumber;
   }
   // for valid reference number & invalid reference number
-  public String dispatchedOrder( Order order)
+  @PUT
+@Consumes("application/json")
+@Produces("application/json")
+  @Path("json")
+  public RestResponse<String> dispatchedOrder(@QueryParam("Order") Order order)
   {
     for ( int key : orderMap.keySet() ) {
     if(key == order.orderReferenceNumber)
@@ -85,7 +89,7 @@ return "The Order is marked as dispacthed";
 @Consumes("application/json")
 @Produces("application/json")
 @Path("json")
-     public String preventUpdateOrder(@QueryParam("orderReferenceNumber") int orderReferenceNumber, @QueryParam("numberOfBricks") int numberOfBricks)
+     public RestResponse<String> preventUpdateOrder(@QueryParam("orderReferenceNumber") int orderReferenceNumber, @QueryParam("numberOfBricks") int numberOfBricks)
   {
     Order order = orderMap.get(orderReferenceNumber);
    if(order.dispatch){
